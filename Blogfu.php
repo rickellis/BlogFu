@@ -50,7 +50,7 @@ class Blogfu {
 
    // --------------------------------------------------------------------
 
-    // Constructor. Just sets some options and validates them.
+    // Constructor. Sets the options and validates them.
     function Blogfu($options = array()) {
         if (is_array($options) and count($options) > 0) {
             foreach ($options as $key => $val) {
@@ -255,32 +255,31 @@ class Blogfu {
 
 	// --------------------------------------------------------------------
 
-	// Set a benchmark marker
-	function mark($name)
-	{
-		$this->marker[$name] = microtime();
-	}
+    // Set a benchmark marker
+    function mark($name)
+    {
+        $this->marker[$name] = microtime();
+    }
 
 	// --------------------------------------------------------------------
 
-	// Calculates the time difference between two marked points.
-	
-	function elapsedTime($point1 = 'start', $point2 = 'end', $decimals = 4)
-	{
-		if ( ! isset($this->marker[$point1]))
-		{
-			return '';
-		}
+    // Calculates the time difference between two marked points.
 
-		if ( ! isset($this->marker[$point2]))
-		{
-			$this->marker[$point2] = microtime();
-		}
-	
-		list($sm, $ss) = explode(' ', $this->marker[$point1]);
-		list($em, $es) = explode(' ', $this->marker[$point2]);
+    function elapsedTime($point1 = 'start', $point2 = 'end', $decimals = 4)
+    {
+        if ( ! isset($this->marker[$point1]))
+        {
+            return '';
+        }
 
-		return number_format(($em + $es) - ($sm + $ss), $decimals);
-	}
+        if ( ! isset($this->marker[$point2]))
+        {
+            $this->marker[$point2] = microtime();
+        }
 
+        list($sm, $ss) = explode(' ', $this->marker[$point1]);
+        list($em, $es) = explode(' ', $this->marker[$point2]);
+
+        return number_format(($em + $es) - ($sm + $ss), $decimals);
+    }
 }

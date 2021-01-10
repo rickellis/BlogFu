@@ -16,6 +16,8 @@ Blog posts are saved as markdown files (or they can be any file type). I'm inclu
 
 There is a [table of contents](https://github.com/rickellis/BlogFu/blob/main/content/_toc.json) JSON file. It contains the titles and date of all the blog posts. That file can be customized to contain any additional meta data you need to associate with a blog post.
 
+BlogFu includes a simple benchmark function so you can show the elapsed time.
+
 I manage the whole thing by hand and pull from Github when I have a new post.
 
 ### Why?
@@ -26,7 +28,43 @@ Why do I bother doing this by hand when there are lots of good blog engines? Mos
 
 ## Usage Example
 
-Look at the [example.php](https://github.com/rickellis/BlogFu/blob/main/example.php) page to see how BlogFu is used.
+Look at the [example.php](https://github.com/rickellis/BlogFu/blob/main/example.php) page to see how BlogFu is used on a single page design. If you prefer to break up your blog into discredt pages that's easy to do as well.
+
+### TOC File
+
+The table of contents file contains a JSON object with the titles/date/etc. of your blog posts. Here's the basic format:
+
+```json
+{
+  "first-post": {
+    "title": "My first post",
+    "date": "January 1st 2021"
+  },
+  "another-post": {
+    "title": "Another blog post",
+    "date": "January 2nd 2021"
+  },
+  "third-post": {
+    "title": "This is my third post",
+    "date": "January 3rd 2021"
+  }
+}
+```
+
+If you need additional metadata you can add it to the JSON object and it will be availble both in the `getEntry()` function and the `getTitles()` function described in the API section below.
+
+```json
+{
+  "first-post": {
+    "title": "My first post",
+    "date": "January 1st 2021",
+    "excerpt": "This is an excerpt from my post",
+    "pullquote": "Here is a quote!"
+  }
+}
+```
+
+---
 
 ## API Reference
 
@@ -56,3 +94,90 @@ $B = new Blogfu(array(
 - **tocFile** (string). The name of the **JSON** file containing your blog post titles, date, etc.
 
 - **fileExt** (string). The file extension of your blog files. Since the URL only contains the name of a post and not the file extension, BlogFu needs to know what the extension is.
+
+---
+
+##### URI Validation
+
+```php
+$B->uriExists()
+```
+
+Returns true/false if the URI contains at least one segments. Note that this function doesn't do any validation. It just looks for the presense of a URI segment. In the example code we use this to determine whether to show the table of contents or render an actual blog post request.
+
+---
+
+##### Validate blog post request
+
+```php
+$B->isValidRequest()
+```
+
+Returns true/false if the URI segment correlates to an actual blog post file. In the example, we use this function to determine whether we should fetch a blog post or show a 404.
+
+---
+
+##### Get Blog Entry
+
+```php
+$B->getEntry()
+```
+
+Returns an object containing the blog post file data as well as the item in your TOC file. Use object syntaxt to access it:
+
+```php
+$entry = $B->getEntry();
+
+echo $entry->title;
+echo $entry->date;
+echo $entry->body;
+```
+
+---
+
+##### Get Titles
+
+```php
+$B->getTitles()
+```
+
+Returns an object containing all the data in your TOC file. Typically you'll loop through this object:
+
+```php
+    foreach ($B->getTitles() as $row) {
+        echo "<p>";
+        echo "<a href='example.php/{$row->filename}'>{$row->title}</a>";
+        echo " - ";
+        echo $row->date;
+        echo "</p>";
+    }
+```
+
+---
+
+##### Benchmark Functions
+
+These two functions let you set a start and end position and show the elapsed time. Here's how you'll use it:
+
+```php
+$B->mark('start');
+
+// A bunch of stuff happens here
+
+$B->mark('end');
+echo $B->elapsedTime('start', 'end');
+```
+
+**Note:** "start" and "end" are just arbitrary markers. You can use whatever syntaxt you prefer.
+
+## License
+
+MIT
+
+Copyright 2021 Rick Ellis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
