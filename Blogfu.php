@@ -40,6 +40,7 @@
 
 class Blogfu {
     var $uriRequest = '';
+    var $marker = array();
     var $options = array(
         'showErrors' => false,
         'baseDir'  => 'content',
@@ -47,7 +48,7 @@ class Blogfu {
         'fileExt' => '.md'
     );
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Constructor. Just sets some options and validates them.
     function Blogfu($options = array()) {
@@ -62,14 +63,14 @@ class Blogfu {
         }
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Returns true/false if the URI contains a segment
     function uriExists() {
         return ($this->uriRequest !== '') ? true : false;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Returns true if the URI corresponds to a blog post file
     function isValidRequest() {
@@ -86,7 +87,7 @@ class Blogfu {
         return true;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Get the blog entry based on the URI request. Returns an object
     function getEntry() {
@@ -95,25 +96,21 @@ class Blogfu {
 
         if (! isset($titles[$this->uriRequest])) {
             $this->_printError('The URI does not correspond to an item in the TOC file');
-            $filename = '';
-            $title = '';
-            $date = '';
-        }
-        else {
-            $filename = $this->uriRequest;
-            $title = $titles[$this->uriRequest]['title'];
-            $date = $titles[$this->uriRequest]['date'];
+            return false;
         }
 
         $blog = new stdClass; 
-        $blog->filename = $filename;
-        $blog->title = $title;
-        $blog->date = $date;
+        $blog->filename = $this->uriRequest;
+
+        foreach ($titles[$this->uriRequest] as $key => $val) {
+            $blog->$key = $val;
+        }
+
         $blog->body = file_get_contents($this->_getRequestPath());
         return $blog;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Returns an array with all the info in the TOC file
     function getTitles() {
@@ -122,8 +119,10 @@ class Blogfu {
         foreach ($this->_getDecodedTitles() as $key => $val) {
             $row = new stdClass;
             $row->filename = $key;
-            $row->title = $val['title'];
-            $row->date = $val['date'];
+
+            foreach ($val as $k => $v) {
+                $row->$k = $v;
+            }
             $result[$i] = $row;
             $i++;
         }
@@ -131,7 +130,7 @@ class Blogfu {
         return $result;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Load the TOC Jason file and decode it
     private function _getDecodedTitles() {
@@ -146,21 +145,21 @@ class Blogfu {
         return $titles;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Returns the full path to the TOC file
     private function _getTocPath() {
         return $this->_getOption('baseDir') . $this->_getOption('tocFile');
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Returns the full path to the requestted blog post
     private function _getRequestPath() {
         return $this->_getOption('baseDir'). $this->uriRequest . $this->_getOption('fileExt');
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Validates all the options passed to the constructor
     private function _validateOptions() {
@@ -207,7 +206,7 @@ class Blogfu {
         return true;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Fetches the URI segment
     private function _getUriRequest(){
@@ -226,7 +225,7 @@ class Blogfu {
         $this->uriRequest = $uri;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Helper function to retrieve an option from the $options array
     private function _getOption($which) {
@@ -238,14 +237,14 @@ class Blogfu {
         return $this->options[$which];
     }
 
-    // ------------------------------------------------------------------------
+    // --------------------------------------------------------------------
 
     // Sets an option in the $options array
     private function _setOption($which, $value) {
         $this->options[$which] = $value;
     }
 
-    // ------------------------------------------------------------------------
+   // --------------------------------------------------------------------
 
     // Echos an error if showErrors is set to true 
     private function _printError($str) {
@@ -253,4 +252,35 @@ class Blogfu {
             echo $str;
         }
     }
+
+	// --------------------------------------------------------------------
+
+	// Set a benchmark marker
+	function mark($name)
+	{
+		$this->marker[$name] = microtime();
+	}
+
+	// --------------------------------------------------------------------
+
+	// Calculates the time difference between two marked points.
+	
+	function elapsedTime($point1 = 'start', $point2 = 'end', $decimals = 4)
+	{
+		if ( ! isset($this->marker[$point1]))
+		{
+			return '';
+		}
+
+		if ( ! isset($this->marker[$point2]))
+		{
+			$this->marker[$point2] = microtime();
+		}
+	
+		list($sm, $ss) = explode(' ', $this->marker[$point1]);
+		list($em, $es) = explode(' ', $this->marker[$point2]);
+
+		return number_format(($em + $es) - ($sm + $ss), $decimals);
+	}
+
 }

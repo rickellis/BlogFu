@@ -1,4 +1,4 @@
-And look...my third blog post!! Yay!
+This is my second blog post! Woot!
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc a risus nisl. Duis suscipit sapien sit amet mauris interdum, et ornare massa rutrum. In finibus dui vitae viverra feugiat. Duis pulvinar metus vitae interdum blandit. Ut nec est vitae magna aliquet consectetur. Donec interdum tempus nibh, eu maximus arcu commodo congue. Duis vitae maximus risus. Aliquam lacinia ut leo a blandit. Aliquam ullamcorper metus posuere, facilisis velit non, tincidunt nunc. Mauris vulputate sapien non vestibulum eleifend. Duis quis ligula odio. Nunc commodo risus diam, ac placerat metus sodales ut. Cras elementum nisl et malesuada auctor.
 

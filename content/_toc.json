@@ -1,10 +1,10 @@
 {
   "first-post": {
-    "title": "This is my first post",
+    "title": "My first post",
     "date": "January 1st 2021"
   },
-  "second-post": {
-    "title": "This is my second post",
+  "another-post": {
+    "title": "Another blog post",
     "date": "January 2nd 2021"
   },
   "third-post": {
