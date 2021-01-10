@@ -53,7 +53,7 @@ The table of contents file contains a JSON object with the titles/date/etc. of y
 }
 ```
 
-**Note:** The index of each object must correspond to the file name of your blog posts (without the file extension). In the example above, the blog post file are named `first-post.md`, `another-post.md`, and `third-post.md`.
+**Note:** The index of each object must correspond to the file name of your blog posts (without the file extension). In the example above, the blog post files are named `first-post.md`, `another-post.md`, and `third-post.md`.
 
 If you need additional metadata you can add it to the JSON object and it will be available both in the `getEntry()` function and the `getTitles()` function described in the API section below.
 
@@ -101,7 +101,7 @@ $B = new Blogfu(array(
 
 ---
 
-##### URI Validation
+### URI Validation
 
 ```php
 $B->uriExists()
@@ -111,7 +111,7 @@ Returns true/false if the URI contains at least one segments. Note that this fun
 
 ---
 
-##### Validate blog post request
+### Validate blog post request
 
 ```php
 $B->isValidRequest()
@@ -121,7 +121,7 @@ Returns true/false if the URI segment correlates to an actual blog post file. In
 
 ---
 
-##### Get Blog Entry
+### Get Blog Entry
 
 ```php
 $B->getEntry()
@@ -139,7 +139,7 @@ echo $entry->body;
 
 ---
 
-##### Get Titles
+### Get Titles
 
 ```php
 $B->getTitles()
@@ -148,18 +148,18 @@ $B->getTitles()
 Returns an object containing all the data in your TOC file. Typically you'll loop through this object:
 
 ```php
-    foreach ($B->getTitles() as $row) {
-        echo "<p>";
-        echo "<a href='example.php/{$row->filename}'>{$row->title}</a>";
-        echo " - ";
-        echo $row->date;
-        echo "</p>";
-    }
+foreach ($B->getTitles() as $row) {
+    echo "<p>";
+    echo "<a href='example.php/{$row->filename}'>{$row->title}</a>";
+    echo " - ";
+    echo $row->date;
+    echo "</p>";
+}
 ```
 
 ---
 
-##### Benchmark Functions
+### Benchmark Functions
 
 These two functions let you set a start and end position and show the elapsed time. Here's how you'll use it:
 

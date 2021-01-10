@@ -34,7 +34,7 @@ if ($B->uriExists()) {
     }  
 }
 else {
-    // Show a list of titles
+    // Show a list of blog post titles
     foreach ($B->getTitles() as $row) {
         echo "<p>";
         echo "<a href='example.php/{$row->filename}'>{$row->title}</a>";

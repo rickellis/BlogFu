@@ -7,11 +7,11 @@
 //   |____/|_|\___/ \__, |_|   \__,_|
 //                 |___/                     
 // 
-//    Absurdly simple flat file blog engine written in PHP
+//   Absurdly simple flat file blog engine written in PHP
 // -----------------------------------------------------------------------------------
-//    VERSION 1.0.0
+//   VERSION 1.0.0
 // -----------------------------------------------------------------------------------
-//    USAGE:  
+//   USAGE:  
 //
 //      $B = new Blogfu(array();
 //
